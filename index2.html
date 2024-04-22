@@ -138,17 +138,28 @@ function generateEventContent(eventId, index) {
 
 // Gestione dell'evento onchange del select
 select.addEventListener("change", function() {
+    const selectedIndex = this.selectedIndex;
+    const selectedOption = this.options[selectedIndex];
+    const eventId = selectedOption.value.slice(1);
+    
     // Rimuovi tutti gli eventi attualmente visualizzati
     contentContainers.forEach(container => container.innerHTML = "");
-    // Itera su tutte le opzioni nel select e genera il contenuto per ciascuna opzione
-    for (let i = 0; i < this.options.length; i++) {
-        generateEventContent(this.options[i].value.slice(1), i % contentContainers.length);
-    }
+    
+    // Genera il contenuto per l'evento selezionato
+    generateEventContent(eventId, selectedIndex % contentContainers.length);
 });
 
-// Genera il contenuto iniziale basato sulla selezione predefinita
-for (let i = 0; i < select.options.length; i++) {
-    generateEventContent(select.options[i].value.slice(1), i % contentContainers.length);
+// Verifica la larghezza del dispositivo e genera il contenuto iniziale di conseguenza
+if (window.innerWidth > 1000) {
+    // Genera il contenuto iniziale basato sulla selezione predefinita
+    for (let i = 0; i < select.options.length; i++) {
+        generateEventContent(select.options[i].value.slice(1), i % contentContainers.length);
+    }
+} else {
+    // Genera il contenuto iniziale basato sulla selezione predefinita con un indice fisso
+    for (let i = 0; i < select.options.length; i++) {
+        generateEventContent(select.options[i].value.slice(1), 1);
+    }
 }
 </script>
 </html>
